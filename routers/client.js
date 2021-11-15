@@ -1,6 +1,5 @@
 const express = require('express');
-const {db} = require('../utils/db');
-
+const {db} = require("../utils/db");
 const clientRouter = express.Router();
 
 clientRouter
@@ -16,12 +15,16 @@ clientRouter
     });
   })
 
-  .post('/:id', (req, res) => {
-    res.send('Dodaj')
+  .put('/:id', (req, res) => {
+    res.send('Zmodyfikuj pojedynczego.')
   })
 
-  .put('/:id', (req, res) => {
-    res.send('Zmodyfikuj');
+  .post('/', (req, res) => {
+    const id = db.create(req.body);
+    res.render('client/added', {
+      name: req.body.name,
+      id,
+    })
   })
 
   .delete('/:id', (req, res) => {
@@ -29,8 +32,16 @@ clientRouter
     res.render('client/deleted');
   })
 
-;
+  .get('/form/add', (req, res) => {
+    res.render('client/forms/add');
+  })
 
+  .get('/form/edit/:id', (req, res) => {
+    res.render('client/forms/edit', {
+      client: db.getOne(req.params.id)
+    });
+  })
+;
 module.exports = {
   clientRouter,
 }

@@ -14,15 +14,18 @@ class Db {
 
   _save() {
     writeFile(this.dbFileName, JSON.stringify(this._data), 'utf8');
-
   }
 
   create(obj) {
+    const id = uuid();
+
     this._data.push({
-      id: uuid(),
-      ...obj, // ... -> operator rozproszenia
+      id,
+      ...obj,
     });
     this._save();
+
+    return id;
   }
 
   getAll() {
